@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import engine from './demoEngine';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      timer: null,
+      time: .5,
+      step: engine.get()
+    }
+
+    this.tick = this.tick.bind(this)
+  }
+
+  tick() {
+    this.setState({ step: engine.get() });
+  }
+
+  componentDidMount() {
+    this.setState({
+      timer: setInterval(this.tick, this.state.time * 1000)
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
+  }
+
+  render() {
+    return (
+      <div>
+        <div>APP</div>
+        <div>{this.state.step}</div>
+      </div>
+    );
+  }
+};
+
+
 
 export default App;
